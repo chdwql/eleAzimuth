@@ -1,0 +1,6 @@
+.DS_Store
+./etc/
+./src/default.conf
+./src/.DS_Store
+./src/geomagnetic_tools.cpython-39-x86_64-linux-gnu.so
+./src/__pycache__/
