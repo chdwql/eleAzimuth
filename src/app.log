@@ -65,3 +65,228 @@
 2025-04-22 15:47:31 - werkzeug - INFO - 127.0.0.1 - - [22/Apr/2025 15:47:31] "GET /apidocs/ HTTP/1.1" 200 -
 2025-04-22 15:47:35 - werkzeug - INFO - 127.0.0.1 - - [22/Apr/2025 15:47:35] "GET /ele_Azimuth?stationname=°²Çð&itemname=µÚÒ»&database=shandong-official&startdate=20210101&enddate=20210131 HTTP/1.1" 200 -
 2025-04-22 15:49:10 - werkzeug - INFO - 127.0.0.1 - - [22/Apr/2025 15:49:10] "GET /ele_Azimuth?stationname=°²Çð&itemname=µÚÒ»&database=shandong-official&startdate=20210101&enddate=20210131 HTTP/1.1" 200 -
+2025-04-23 23:24:34 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:8888
+2025-04-23 23:24:34 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-23 23:24:34 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:24:35 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:24:35 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:24:41 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:24:41] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:24:41 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:24:41] "GET /flasgger_static/swagger-ui.css HTTP/1.1" 200 -
+2025-04-23 23:24:42 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:24:42] "GET /flasgger_static/swagger-ui-bundle.js HTTP/1.1" 200 -
+2025-04-23 23:24:42 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:24:42] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:24:42 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:24:42] "GET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1" 200 -
+2025-04-23 23:24:42 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:24:42] "GET /flasgger_static/lib/jquery.min.js HTTP/1.1" 200 -
+2025-04-23 23:24:42 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:24:42] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:24:43 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:24:43] "GET /apispec_1.json HTTP/1.1" 200 -
+2025-04-23 23:24:43 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:24:43] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:24:43 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:24:43] "GET /flasgger_static/favicon-32x32.png HTTP/1.1" 200 -
+2025-04-23 23:24:43 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:24:43] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:24:50 - fetching - ERROR - Êý¾Ý¿âÁ¬½Ó´íÎó: (cx_Oracle.DatabaseError) DPI-1047: Cannot locate a 64-bit Oracle Client library: "The specified module could not be found". See https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html for help
+(Background on this error at: https://sqlalche.me/e/14/4xp6)
+2025-04-23 23:24:50 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:24:50] "GET /ele_Azimuth?stationname=°²Çð&itemname=µÚÒ»&database=shandong-official&startdate=20210101&enddate=20210131 HTTP/1.1" 200 -
+2025-04-23 23:28:05 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:28:05 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:28:07 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:28:07 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:28:32 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:28:32 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:28:33 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:28:33 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:28:47 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:8888
+2025-04-23 23:28:47 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-23 23:28:47 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:28:48 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:28:48 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:28:52 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:28:52] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:28:52 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:28:52] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2025-04-23 23:28:52 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:28:52] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2025-04-23 23:28:52 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:28:52] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2025-04-23 23:28:52 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:28:52] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2025-04-23 23:28:53 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:28:53] "GET /apispec_1.json HTTP/1.1" 200 -
+2025-04-23 23:28:53 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:28:53] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2025-04-23 23:28:59 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:28:59] "GET /ele_Azimuth?stationname=°²Çð&itemname=µÚÒ»&database=shandong-official&startdate=20210101&enddate=20210131 HTTP/1.1" 200 -
+2025-04-23 23:30:29 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:30:29 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:30:30 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:30:30 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:30:33 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:30:34 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:30:35 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:30:35 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:30:39 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:8888
+2025-04-23 23:30:39 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-23 23:30:39 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:30:40 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:30:40 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:30:43 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:30:43] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:30:44 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:30:44] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:30:44 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:30:44] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2025-04-23 23:30:45 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:30:45] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2025-04-23 23:30:45 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:30:45] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2025-04-23 23:30:45 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:30:45] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2025-04-23 23:30:45 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:30:45] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:30:45 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:30:45] "GET /apispec_1.json HTTP/1.1" 200 -
+2025-04-23 23:30:45 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:30:45] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:30:45 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:30:45] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2025-04-23 23:30:45 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:30:45] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:30:54 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:30:54] "GET /ele_Azimuth?stationname=°²Çð&itemname=µÚÒ»&database=shandong-official&startdate=20210101&enddate=20210131 HTTP/1.1" 200 -
+2025-04-23 23:31:27 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:31:28 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:31:29 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:31:29 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:31:30 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:31:30 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:31:32 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:31:32 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:32:37 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:32:37 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:32:38 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:32:38 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:32:43 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:8888
+2025-04-23 23:32:43 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-23 23:32:43 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:32:45 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:32:45 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:32:47 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:32:47] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:32:47 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:32:47] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2025-04-23 23:32:47 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:32:47] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2025-04-23 23:32:47 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:32:47] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2025-04-23 23:32:47 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:32:47] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2025-04-23 23:32:48 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:32:48] "GET /apispec_1.json HTTP/1.1" 200 -
+2025-04-23 23:32:48 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:32:48] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2025-04-23 23:32:56 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:32:56] "GET /ele_Azimuth?stationname=°²Çð&itemname=µÚÒ»&database=shandong-official&startdate=20210101&enddate=20210131 HTTP/1.1" 200 -
+2025-04-23 23:33:15 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:33:15 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:33:17 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:33:17 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:35:04 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:35:04] "GET /ele_Azimuth?stationname=°²Çð&itemname=µÚÒ»&database=shandong-official&startdate=20210101&enddate=20210131 HTTP/1.1" 200 -
+2025-04-23 23:35:46 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:8888
+2025-04-23 23:35:46 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-23 23:35:46 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:35:47 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:35:47 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:35:48 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:35:48] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:35:48 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:35:48] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2025-04-23 23:35:48 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:35:48] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2025-04-23 23:35:48 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:35:48] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2025-04-23 23:35:48 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:35:48] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2025-04-23 23:35:49 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:35:49] "GET /apispec_1.json HTTP/1.1" 200 -
+2025-04-23 23:35:49 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:35:49] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2025-04-23 23:35:57 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:35:57] "GET /ele_Azimuth?stationname=°²Çð&itemname=µÚÒ»&database=shandong-official&startdate=20210101&enddate=20210131 HTTP/1.1" 200 -
+2025-04-23 23:37:54 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:37:54 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:37:59 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:8888
+2025-04-23 23:37:59 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-23 23:37:59 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:38:01 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:38:01 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:38:03 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:38:03] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:38:03 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:38:03] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2025-04-23 23:38:03 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:38:03] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2025-04-23 23:38:03 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:38:03] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2025-04-23 23:38:03 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:38:03] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2025-04-23 23:38:03 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:38:03] "GET /apispec_1.json HTTP/1.1" 200 -
+2025-04-23 23:38:03 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:38:03] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2025-04-23 23:38:12 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:38:12] "GET /ele_Azimuth?stationname=°²Çð&itemname=µÚÒ»&database=shandong-official&startdate=20210101&enddate=20210131 HTTP/1.1" 200 -
+2025-04-23 23:38:51 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:38:52 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:38:53 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:38:53 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:41:00 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:41:00 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:41:05 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:8888
+2025-04-23 23:41:05 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-23 23:41:05 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:41:06 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:41:06 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:41:09 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:41:09] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:41:09 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:41:09] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2025-04-23 23:41:10 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:41:10] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2025-04-23 23:41:10 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:41:10] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2025-04-23 23:41:10 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:41:10] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2025-04-23 23:41:10 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:41:10] "GET /apispec_1.json HTTP/1.1" 200 -
+2025-04-23 23:41:10 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:41:10] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2025-04-23 23:41:18 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:41:18] "GET /ele_Azimuth?stationname=°²Çð&itemname=µÚÒ»&database=shandong-official&startdate=20210101&enddate=20210131 HTTP/1.1" 200 -
+2025-04-23 23:41:31 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:41:32 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:41:33 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:41:33 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:50:57 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:50:57 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:50:59 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:50:59 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:52:25 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:52:25] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:53:28 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:53:28] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:56:41 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:56:41 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:56:42 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:56:42 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:57:12 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:57:13 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:57:14 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:57:14 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:57:26 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:57:27 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:57:28 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:57:28 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:57:40 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:57:40 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:57:42 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:57:42 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:57:54 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:57:54 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:57:55 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:57:55 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:58:36 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:8888
+2025-04-23 23:58:36 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-23 23:58:36 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:58:37 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:58:37 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-23 23:58:39 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:58:39] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-23 23:58:39 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:58:39] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2025-04-23 23:58:40 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:58:40] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2025-04-23 23:58:40 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:58:40] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2025-04-23 23:58:40 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:58:40] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2025-04-23 23:58:40 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:58:40] "GET /apispec_1.json HTTP/1.1" 200 -
+2025-04-23 23:58:40 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:58:40] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2025-04-23 23:58:51 - werkzeug - INFO - 127.0.0.1 - - [23/Apr/2025 23:58:51] "GET /ele_Azimuth?stationname=°²Çð&itemname=µÚÒ»&database=shandong-official&startdate=20210101&enddate=20210131 HTTP/1.1" 200 -
+2025-04-23 23:59:14 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-23 23:59:15 - werkzeug - INFO -  * Restarting with stat
+2025-04-23 23:59:16 - werkzeug - WARNING -  * Debugger is active!
+2025-04-23 23:59:16 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-24 00:00:36 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-24 00:00:36 - werkzeug - INFO -  * Restarting with stat
+2025-04-24 00:00:37 - werkzeug - WARNING -  * Debugger is active!
+2025-04-24 00:00:37 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-24 00:02:39 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-24 00:02:39 - werkzeug - INFO -  * Restarting with stat
+2025-04-24 00:02:40 - werkzeug - WARNING -  * Debugger is active!
+2025-04-24 00:02:40 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-24 00:03:31 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-24 00:03:32 - werkzeug - INFO -  * Restarting with stat
+2025-04-24 00:03:38 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:8888
+2025-04-24 00:03:38 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-24 00:03:38 - werkzeug - INFO -  * Restarting with stat
+2025-04-24 00:03:40 - werkzeug - WARNING -  * Debugger is active!
+2025-04-24 00:03:40 - werkzeug - INFO -  * Debugger PIN: 854-730-234
+2025-04-24 00:03:41 - werkzeug - INFO - 127.0.0.1 - - [24/Apr/2025 00:03:41] "GET /apidocs/ HTTP/1.1" 200 -
+2025-04-24 00:03:41 - werkzeug - INFO - 127.0.0.1 - - [24/Apr/2025 00:03:41] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2025-04-24 00:03:42 - werkzeug - INFO - 127.0.0.1 - - [24/Apr/2025 00:03:42] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2025-04-24 00:03:42 - werkzeug - INFO - 127.0.0.1 - - [24/Apr/2025 00:03:42] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2025-04-24 00:03:42 - werkzeug - INFO - 127.0.0.1 - - [24/Apr/2025 00:03:42] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2025-04-24 00:03:42 - werkzeug - INFO - 127.0.0.1 - - [24/Apr/2025 00:03:42] "GET /apispec_1.json HTTP/1.1" 200 -
+2025-04-24 00:03:42 - werkzeug - INFO - 127.0.0.1 - - [24/Apr/2025 00:03:42] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2025-04-24 00:03:51 - werkzeug - INFO - 127.0.0.1 - - [24/Apr/2025 00:03:51] "GET /ele_Azimuth?stationname=°²Çð&itemname=µÚÒ»&database=shandong-official&startdate=20210101&enddate=20210131 HTTP/1.1" 200 -
+2025-04-24 00:05:13 - werkzeug - INFO -  * Detected change in 'D:\\Work\\code\\eleAzimuth\\src\\app.py', reloading
+2025-04-24 00:05:14 - werkzeug - INFO -  * Restarting with stat
+2025-04-24 00:05:15 - werkzeug - WARNING -  * Debugger is active!
+2025-04-24 00:05:15 - werkzeug - INFO -  * Debugger PIN: 854-730-234

@@ -1,13 +1,12 @@
-import os
 import numba
+import cx_Oracle
 import numpy as np
 import pandas as pd
-import plotly.express as px
 from flasgger import Swagger
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_restful import reqparse, Api, Resource
-from numpy import pi, sqrt, arctan, sin, cos
+from numpy import pi, sqrt, arctan
 from numpy.fft import fft
 from pandas.plotting import register_matplotlib_converters
 from addereq import fetching as tsf
@@ -19,9 +18,6 @@ app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 CORS(app, supports_credentials=True)
 api = Api(app)
-
-# 移除未使用的变量
-# UPLOAD_PATH = os.path.abspath('.')
 
 # Swagger配置
 swagger_config = Swagger.DEFAULT_CONFIG
@@ -37,39 +33,46 @@ swagger = Swagger(app, config=swagger_config)
 # 使用numba加速计算密集型函数
 @numba.jit(nopython=True)
 def _calculate_azimuth(amplitude_ns, amplitude_ew, amplitude_ne, amplitude_nw):
-    """计算方位角核心函数 - 使用numba加速"""
+    """计算方位角核心函数 - 使用numba加速
+
+    参数可能为0或不存在，函数会根据可用的参数计算相应的方位角
+    返回一个字典，键为方位角类型索引，值为计算得到的角度
+    """
     results = {}
 
     # 预先计算常数
     factor = 180.0 / pi
     sqrt2 = sqrt(2.0)
 
+    # 处理可能的缺失值，将None或NaN替换为0
+    ns_val = 0.0 if amplitude_ns is None or amplitude_ns != amplitude_ns else amplitude_ns
+    ew_val = 0.0 if amplitude_ew is None or amplitude_ew != amplitude_ew else amplitude_ew
+    ne_val = 0.0 if amplitude_ne is None or amplitude_ne != amplitude_ne else amplitude_ne
+    nw_val = 0.0 if amplitude_nw is None or amplitude_nw != amplitude_nw else amplitude_nw
+
     # EW/NW
-    if amplitude_ew > 0 and amplitude_nw > 0:
-        angle = 90.0 + factor * arctan(sqrt2 * amplitude_nw / amplitude_ew -
-                                       1.0)
+    if ew_val > 0 and nw_val > 0:
+        angle = 90.0 + factor * arctan(sqrt2 * nw_val / ew_val - 1.0)
         results[0] = angle  # 'EW/NW'
 
     # EW/NE
-    if amplitude_ew > 0 and amplitude_ne > 0:
-        angle = 90.0 - factor * arctan(sqrt2 * amplitude_ne / amplitude_ew -
-                                       1.0)
+    if ew_val > 0 and ne_val > 0:
+        angle = 90.0 - factor * arctan(sqrt2 * ne_val / ew_val - 1.0)
         results[1] = angle  # 'EW/NE'
 
     # NS/NW
-    if amplitude_ns > 0 and amplitude_nw > 0:
-        angle = 180.0 - factor * arctan(sqrt2 * amplitude_nw / amplitude_ns -
-                                        1.0)
+    if ns_val > 0 and nw_val > 0:
+        angle = 180.0 - factor * arctan(sqrt2 * nw_val / ns_val - 1.0)
         results[2] = angle  # 'NS/NW'
 
     # NS/NE
-    if amplitude_ns > 0 and amplitude_ne > 0:
-        angle = factor * arctan(sqrt2 * amplitude_ne / amplitude_ns - 1.0)
+    if ns_val > 0 and ne_val > 0:
+        angle = factor * arctan(sqrt2 * ne_val / ns_val - 1.0)
         results[3] = angle  # 'NS/NE'
 
     # NS/EW
-    if amplitude_ns > 0 and amplitude_ew > 0:
-        angle = factor * arctan(amplitude_ew / amplitude_ns)
+    if ns_val > 0 and ew_val > 0:
+        angle = factor * arctan(ew_val / ns_val)
         results[4] = angle  # 'NS/EW'
 
     return results
@@ -108,7 +111,6 @@ class AzimuthCalc:
         """计算单日的地电场优势方位角 - 性能优化版"""
         if df.empty:
             return {}
-
         try:
             # 查找数据中的项目ID
             items = df['ITEMID'].unique()
@@ -120,13 +122,9 @@ class AzimuthCalc:
             if '3411' in items:
                 base_ns, base_ew = '3411', '3412'
                 ne, nw = '3413', '3414'
-                has_valid_items = all(item in items
-                                      for item in AzimuthCalc.ITEM_GROUP_1)
             elif '3421' in items:
                 base_ns, base_ew = '3421', '3422'
                 ne, nw = '3423', '3424'
-                has_valid_items = all(item in items
-                                      for item in AzimuthCalc.ITEM_GROUP_2)
             else:
                 return {}
 
@@ -142,20 +140,26 @@ class AzimuthCalc:
                     amplitudes[item] = AzimuthCalc.compute_fft(
                         tuple(item_values), AzimuthCalc.ORDER)
 
-            # 如果缺少任何必需的项目，返回空结果
-            if not all(item in amplitudes
-                       for item in [base_ns, base_ew, ne, nw]):
-                return {}
+            # 不再要求所有项目都存在，只要有足够的项目能计算至少一个方位角即可
 
             # 使用numba加速的函数计算方位角
-            azimuth_values = _calculate_azimuth(amplitudes[base_ns],
-                                                amplitudes[base_ew],
-                                                amplitudes[ne], amplitudes[nw])
+            # 如果某个参数不存在，传入None
+            ns_val = amplitudes.get(base_ns, None)
+            ew_val = amplitudes.get(base_ew, None)
+            ne_val = amplitudes.get(ne, None)
+            nw_val = amplitudes.get(nw, None)
+
+            # 只要有足够的数据计算至少一个方位角就进行计算
+            azimuth_values = _calculate_azimuth(ns_val, ew_val, ne_val, nw_val)
 
             # 转换为可读结果
             result = {}
             for idx, value in azimuth_values.items():
                 result[AzimuthCalc.DIRECTIONS[idx]] = value
+
+            # 如果没有计算出任何方位角，返回空结果
+            if not result:
+                return {}
 
             return result
 
@@ -287,20 +291,20 @@ class GeoElectricAPI(Resource):
 
     def fetch_and_process(self, startdate, enddate, stationname, itemname,
                           database):
+        cx_Oracle.init_oracle_client(lib_dir='C:/instantclient')
+        conn = tsf.conn_to_Oracle(database)
         """获取数据并计算方位角"""
         try:
             # 连接数据库并获取数据
-            with tsf.conn_to_Oracle(database) as conn:
-                df = tsf.fetching_data(conn,
-                                       startdate,
-                                       enddate,
-                                       '地电场',
-                                       stationname,
-                                       '分钟值',
-                                       '预处理库',
-                                       gzip_flag=False,
-                                       itemname=itemname)
-
+            df = tsf.fetching_data(conn,
+                                   startdate,
+                                   enddate,
+                                   '地电场',
+                                   stationname,
+                                   '分钟值',
+                                   '预处理库',
+                                   gzip_flag=False,
+                                   itemname=itemname)
             # 计算方位角
             if not df.empty:
                 return AzimuthCalc.compute_period_azimuth(df)
@@ -314,7 +318,7 @@ class GeoElectricAPI(Resource):
 @app.route('/', methods=['POST', 'GET'])
 def index():
     '''电磁学科时间序列数据处理API
-    
+
     tags:
       - Welcome to using online calculator API.
     responses:

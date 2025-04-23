@@ -25,14 +25,15 @@
 ### 系统要求
 
 - Python 3.6+
-- Oracle客户端（用于连接数据库）
+- Oracle客户端
+- addereq
 
 ### 安装步骤
 
 1. 克隆仓库
 
 ```bash
-git clone [仓库地址]
+git clone https://github.com/chdwql/eleAzimuth.git
 cd eleAzimuth
 ```
 
@@ -42,7 +43,9 @@ cd eleAzimuth
 pip install -r requirements.txt
 ```
 
-3. 配置数据库连接（如需要）
+3. 配置数据库连接
+
+参考addereq说明
 
 ## 使用方法
 
@@ -130,4 +133,4 @@ eleAzimuth/
 
 ## 许可证
 
-[根据实际情况填写] 
+MIT License
