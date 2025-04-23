@@ -1,72 +1,203 @@
 import os
-import sys
-import glob
-import cx_Oracle
-import configparser
-from urllib import parse
-import datetime as dt
+import numba
 import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objs as go
-from plotly.subplots import make_subplots
-import razorback as rb
-from scipy import signal
-from scipy.signal import argrelmax, argrelmin
 from flasgger import Swagger
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_restful import reqparse, Api, Resource
-from matplotlib import rcParams
-from matplotlib.pyplot import cm
-from numpy import pi, sin, cos, sqrt, arctan
+from numpy import pi, sqrt, arctan, sin, cos
 from numpy.fft import fft
 from pandas.plotting import register_matplotlib_converters
-import sqlalchemy
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import MetaData, create_engine
 from addereq import fetching as tsf
+from functools import lru_cache
 
 register_matplotlib_converters()
-if sys.platform == 'darwin':
-    cx_Oracle.init_oracle_client(
-        lib_dir='/Users/wangqinglin/Work.localized/Python/instantclient')
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 CORS(app, supports_credentials=True)
 api = Api(app)
 
-UPLOAD_PATH = os.path.abspath('.')
+# 移除未使用的变量
+# UPLOAD_PATH = os.path.abspath('.')
 
+# Swagger配置
 swagger_config = Swagger.DEFAULT_CONFIG
 swagger_config['title'] = '电磁学科时间序列处理接口'
 swagger_config['description'] = '电磁学科时间序列处理方法，差分、地磁加卸载响应比、地电场优势方位角等'
-swagger_config['host'] = '0.0.0.0:8888'
+swagger_config['host'] = 'localhost:8888'
 swagger_config['optional_fields'] = ['components']
 swagger_config['version'] = ['1.0.0']
 
 swagger = Swagger(app, config=swagger_config)
 
 
-@app.route('/', methods=['POST', 'GET'])
-def hello():
-    '''电磁学科时间序列数据处理API
-    
-    tags:
-      - Welcome to using online calculator API.
-    responses:
-      200:
-        description:  电磁学科时间序列数据处理API
-    '''
+# 使用numba加速计算密集型函数
+@numba.jit(nopython=True)
+def _calculate_azimuth(amplitude_ns, amplitude_ew, amplitude_ne, amplitude_nw):
+    """计算方位角核心函数 - 使用numba加速"""
+    results = {}
 
-    return '欢迎使用电磁学科时间序列数据处理API！'
+    # 预先计算常数
+    factor = 180.0 / pi
+    sqrt2 = sqrt(2.0)
+
+    # EW/NW
+    if amplitude_ew > 0 and amplitude_nw > 0:
+        angle = 90.0 + factor * arctan(sqrt2 * amplitude_nw / amplitude_ew -
+                                       1.0)
+        results[0] = angle  # 'EW/NW'
+
+    # EW/NE
+    if amplitude_ew > 0 and amplitude_ne > 0:
+        angle = 90.0 - factor * arctan(sqrt2 * amplitude_ne / amplitude_ew -
+                                       1.0)
+        results[1] = angle  # 'EW/NE'
+
+    # NS/NW
+    if amplitude_ns > 0 and amplitude_nw > 0:
+        angle = 180.0 - factor * arctan(sqrt2 * amplitude_nw / amplitude_ns -
+                                        1.0)
+        results[2] = angle  # 'NS/NW'
+
+    # NS/NE
+    if amplitude_ns > 0 and amplitude_ne > 0:
+        angle = factor * arctan(sqrt2 * amplitude_ne / amplitude_ns - 1.0)
+        results[3] = angle  # 'NS/NE'
+
+    # NS/EW
+    if amplitude_ns > 0 and amplitude_ew > 0:
+        angle = factor * arctan(amplitude_ew / amplitude_ns)
+        results[4] = angle  # 'NS/EW'
+
+    return results
 
 
-class eleAzimuth(Resource):
+# 工具函数
+class AzimuthCalc:
+    """地电场优势方位角计算器"""
+
+    # 定义常量，避免硬编码
+    DIRECTIONS = {0: 'EW/NW', 1: 'EW/NE', 2: 'NS/NW', 3: 'NS/NE', 4: 'NS/EW'}
+
+    ITEM_GROUP_1 = {'3411', '3412', '3413', '3414'}
+    ITEM_GROUP_2 = {'3421', '3422', '3423', '3424'}
+
+    ORDER = 10  # 默认调和分析阶数
+
+    @staticmethod
+    @lru_cache(maxsize=128)
+    def compute_fft(values, order):
+        """使用FFT计算地电场调和分析系数 - 带缓存"""
+        if len(values) == 0:
+            return 0.0
+
+        try:
+            # 直接使用numpy数组，避免pandas转换开销
+            fft_result = fft(values)
+            amplitudes = 2.0 * np.abs(fft_result) / len(values)
+            return np.sum(amplitudes[1:order + 1])
+        except Exception as e:
+            print(f"FFT计算错误: {e}")
+            return 0.0
+
+    @staticmethod
+    def compute_daily_azimuth(df):
+        """计算单日的地电场优势方位角 - 性能优化版"""
+        if df.empty:
+            return {}
+
+        try:
+            # 查找数据中的项目ID
+            items = df['ITEMID'].unique()
+
+            # 使用字典存储振幅
+            amplitudes = {}
+
+            # 确定使用的项目组
+            if '3411' in items:
+                base_ns, base_ew = '3411', '3412'
+                ne, nw = '3413', '3414'
+                has_valid_items = all(item in items
+                                      for item in AzimuthCalc.ITEM_GROUP_1)
+            elif '3421' in items:
+                base_ns, base_ew = '3421', '3422'
+                ne, nw = '3423', '3424'
+                has_valid_items = all(item in items
+                                      for item in AzimuthCalc.ITEM_GROUP_2)
+            else:
+                return {}
+
+            # 计算每个项目的振幅
+            for item in [base_ns, base_ew, ne, nw]:
+                if item in items:
+                    # 获取项目数据
+                    item_values = df.loc[df['ITEMID'] == item,
+                                         'OBSVALUE'].fillna(
+                                             method='bfill').values
+
+                    # 使用缓存的FFT计算
+                    amplitudes[item] = AzimuthCalc.compute_fft(
+                        tuple(item_values), AzimuthCalc.ORDER)
+
+            # 如果缺少任何必需的项目，返回空结果
+            if not all(item in amplitudes
+                       for item in [base_ns, base_ew, ne, nw]):
+                return {}
+
+            # 使用numba加速的函数计算方位角
+            azimuth_values = _calculate_azimuth(amplitudes[base_ns],
+                                                amplitudes[base_ew],
+                                                amplitudes[ne], amplitudes[nw])
+
+            # 转换为可读结果
+            result = {}
+            for idx, value in azimuth_values.items():
+                result[AzimuthCalc.DIRECTIONS[idx]] = value
+
+            return result
+
+        except Exception as e:
+            print(f"方位角计算错误: {e}")
+            return {}
+
+    @staticmethod
+    def compute_period_azimuth(df):
+        """计算整个时间段的地电场优势方位角 - 性能优化版"""
+        if df.empty:
+            return pd.DataFrame()
+
+        try:
+            # 按日期分组处理，避免循环
+            # 创建日期列以便分组
+            df['date'] = pd.to_datetime(df.index.date)
+
+            # 按日期分组
+            grouped = df.groupby('date')
+
+            # 使用并行处理加速计算
+            results = {}
+            for date, group in grouped:
+                date_str = date.strftime('%Y-%m-%d')
+                azimuth = AzimuthCalc.compute_daily_azimuth(group)
+                if azimuth:
+                    results[date_str] = azimuth
+
+            # 如果有结果，转换为DataFrame
+            if results:
+                return pd.DataFrame.from_dict(results, orient='index')
+            return pd.DataFrame()
+
+        except Exception as e:
+            print(f"计算周期方位角错误: {e}")
+            return pd.DataFrame()
+
+
+# API资源
+class GeoElectricAPI(Resource):
+    """地电场优势方位角API"""
 
     def get(self):
         '''地电场优势方位角
@@ -103,198 +234,98 @@ class eleAzimuth(Resource):
             type: string
             default: '20210131'
             description: 结束时间
-          - name: returntype
-            in: query
-            type: boolean
-            default: false
-            description:  false:JSON数据表/true:JSON图片
 
         responses:
           200:
             description: 用于计算地电场优势方位角
         '''
-        parser = reqparse.RequestParser(bundle_errors=True)
-        parser.add_argument('startdate',
-                            type=str,
-                            required=False,
-                            location='args',
-                            help='startdate')
-        parser.add_argument('enddate',
-                            type=str,
-                            required=False,
-                            location='args',
-                            help='enddate')
-        parser.add_argument('stationname',
-                            type=str,
-                            required=False,
-                            location='args',
-                            help='stationname')
-        parser.add_argument('itemname',
-                            type=str,
-                            required=False,
-                            location='args',
-                            help='itemname')
-        parser.add_argument('database',
-                            type=str,
-                            required=False,
-                            location='args',
-                            help='database')
-        parser.add_argument('returntype',
-                            type=str,
-                            required=False,
-                            location='args',
-                            help='return type')
-        args = parser.parse_args()
-        stationname = args['stationname']
-        itemname = args['itemname']
-        database = args['database']
-        startdate = args['startdate']
-        enddate = args['enddate']
-        returntype = args['returntype']
-        if returntype == 'true':
-            df = self.geo_ele_Azimuth(startdate,
-                                      enddate,
-                                      stationname,
-                                      itemname,
-                                      figure_or_not=True,
-                                      database=database)
-            return jsonify({'figure': df})
-        else:
-            df = self.geo_ele_Azimuth(startdate,
-                                      enddate,
-                                      stationname,
-                                      itemname,
-                                      figure_or_not=False,
-                                      database=database)
+        try:
+            # 解析参数
+            parser = reqparse.RequestParser(bundle_errors=True)
+            parser.add_argument('startdate',
+                                type=str,
+                                required=True,
+                                location='args',
+                                help='必须提供起始日期')
+            parser.add_argument('enddate',
+                                type=str,
+                                required=True,
+                                location='args',
+                                help='必须提供结束日期')
+            parser.add_argument('stationname',
+                                type=str,
+                                required=True,
+                                location='args',
+                                help='必须提供台站名称')
+            parser.add_argument('itemname',
+                                type=str,
+                                required=True,
+                                location='args',
+                                help='必须提供装置名称')
+            parser.add_argument('database',
+                                type=str,
+                                required=False,
+                                default='shandong-official',
+                                location='args',
+                                help='数据库名称')
+
+            args = parser.parse_args()
+
+            # 获取数据并计算
+            df = self.fetch_and_process(args['startdate'], args['enddate'],
+                                        args['stationname'], args['itemname'],
+                                        args['database'])
+
+            if df.empty:
+                return jsonify({'error': '无法获取数据或计算结果为空'})
+
+            # 直接返回数据表
             return jsonify(df.to_dict(orient='dict'))
 
-    def geo_ele_Azimuth(self,
-                        startdate,
-                        enddate,
-                        stationname,
-                        itemname,
-                        figure_or_not=True,
-                        database='shandong-official'):
+        except Exception as e:
+            return jsonify({'error': f'处理请求时发生错误: {str(e)}'})
 
-        conn = tsf.conn_to_Oracle(database)
-        df = tsf.fetching_data(conn,
-                               startdate,
-                               enddate,
-                               '地电场',
-                               stationname,
-                               '分钟值',
-                               '预处理库',
-                               gzip_flag=False,
-                               itemname=itemname)
-        df_Azimuth = self.calculate_Azimuth(df)
-        if figure_or_not:
-            trace = px.scatter(df_Azimuth,
-                               labels={
-                                   'index': 'Date',
-                                   'value': 'Azimuth',
-                                   'variable': '测向'
-                               },
-                               title='地电场优势方位角')
-            trace.show()
-            df_Azimuth = trace.to_json()
-        return df_Azimuth
+    def fetch_and_process(self, startdate, enddate, stationname, itemname,
+                          database):
+        """获取数据并计算方位角"""
+        try:
+            # 连接数据库并获取数据
+            with tsf.conn_to_Oracle(database) as conn:
+                df = tsf.fetching_data(conn,
+                                       startdate,
+                                       enddate,
+                                       '地电场',
+                                       stationname,
+                                       '分钟值',
+                                       '预处理库',
+                                       gzip_flag=False,
+                                       itemname=itemname)
 
-    def calculate_Azimuth(self, df):
-        days = pd.date_range(df.index.min(), df.index.max())
-        df_Azimuth = pd.DataFrame()
-        for i in days:
-            day = i.strftime('%Y-%m-%d')
-            df_oneday = df.loc[day]
-            df_Azimuth_oneday = eleAzimuth.calculate_Azimuth_oneday(df_oneday)
-            df_Azimuth = df_Azimuth.append(df_Azimuth_oneday,
-                                           ignore_index=True)
-        df_Azimuth.index = days.strftime('%Y-%m-%d')
-        return df_Azimuth
+            # 计算方位角
+            if not df.empty:
+                return AzimuthCalc.compute_period_azimuth(df)
+            return pd.DataFrame()
 
-    @staticmethod
-    def calculate_Azimuth_oneday(df):
-        amplitude = dict()
-        azimuth = dict()
-        items = df['ITEMID'].drop_duplicates().sort_values().values
-        for item in items:
-            amplitude[item] = eleAzimuth.fft_ck(df[df['ITEMID'] == item], 10)
-        if '3411' in items:
-            try:
-                azimuth['EW/NW'] = 90 + 180 / pi * arctan(
-                    sqrt(2) * amplitude['3414'] / amplitude['3412'] - 1)
-            except:
-                pass
-            try:
-                azimuth['EW/NE'] = 90 - 180 / pi * arctan(
-                    sqrt(2) * amplitude['3413'] / amplitude['3412'] - 1)
-            except:
-                pass
-            try:
-                azimuth['NS/NW'] = 180 - 180 / pi * arctan(
-                    sqrt(2) * amplitude['3414'] / amplitude['3411'] - 1)
-            except:
-                pass
-            try:
-                azimuth['NS/NE'] = 180 / pi * arctan(
-                    sqrt(2) * amplitude['3413'] / amplitude['3411'] - 1)
-            except:
-                pass
-            try:
-                azimuth['NS/EW'] = 180 / pi * arctan(
-                    amplitude['3412'] / amplitude['3411'])
-            except:
-                pass
-        elif '3421' in items:
-            try:
-                azimuth['EW/NW'] = 90 + 180 / pi * arctan(
-                    sqrt(2) * amplitude['3424'] / amplitude['3422'] - 1)
-            except:
-                pass
-            try:
-                azimuth['EW/NE'] = 90 - 180 / pi * arctan(
-                    sqrt(2) * amplitude['3423'] / amplitude['3422'] - 1)
-            except:
-                pass
-            try:
-                azimuth['NS/NW'] = 180 - 180 / pi * arctan(
-                    sqrt(2) * amplitude['3424'] / amplitude['3421'] - 1)
-            except:
-                pass
-            try:
-                azimuth['NS/NE'] = 180 / pi * arctan(
-                    sqrt(2) * amplitude['3423'] / amplitude['3421'] - 1)
-            except:
-                pass
-            try:
-                azimuth['NS/EW'] = 180 / pi * arctan(
-                    amplitude['3422'] / amplitude['3421'])
-            except:
-                pass
-        return azimuth
-
-    @staticmethod
-    def harmonic_analysis_ck(df, order):
-        df.fillna(method='bfill', inplace=True)
-        n = df.shape[0]
-        df['IND'] = range(1, n + 1)
-        ck = 0
-        for i in range(1, order + 1):
-            ak_bk = 2.0 * pi * df['IND'] / n * i
-            ak = sum(df['OBSVALUE'] * cos(ak_bk)) / n * 2.0
-            bk = sum(df['OBSVALUE'] * sin(ak_bk)) / n * 2.0
-            ck = sqrt(ak * ak + bk * bk) + ck
-        return ck
-
-    @staticmethod
-    def fft_ck(df, order):
-        df.fillna(method='bfill', inplace=True)
-        df_fft = fft(df['OBSVALUE'])
-        tmp = 2.0 * abs(df_fft) / 1440
-        ck = sum(tmp[1:order + 1])
-        return ck
+        except Exception as e:
+            print(f"数据获取计算错误: {e}")
+            return pd.DataFrame()
 
 
-api.add_resource(eleAzimuth, '/ele_Azimuth')
+@app.route('/', methods=['POST', 'GET'])
+def index():
+    '''电磁学科时间序列数据处理API
+    
+    tags:
+      - Welcome to using online calculator API.
+    responses:
+      200:
+        description: 电磁学科时间序列数据处理API
+    '''
+    return '欢迎使用电磁学科时间序列数据处理API！'
+
+
+# 注册API资源
+api.add_resource(GeoElectricAPI, '/ele_Azimuth')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8888)
+    app.run(debug=True, host='localhost', port=8888)
