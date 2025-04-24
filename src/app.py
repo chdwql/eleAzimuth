@@ -13,6 +13,7 @@ from addereq import fetching as tsf
 from functools import lru_cache
 
 register_matplotlib_converters()
+cx_Oracle.init_oracle_client(lib_dir='C:/instantclient')
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -291,7 +292,6 @@ class GeoElectricAPI(Resource):
 
     def fetch_and_process(self, startdate, enddate, stationname, itemname,
                           database):
-        cx_Oracle.init_oracle_client(lib_dir='C:/instantclient')
         conn = tsf.conn_to_Oracle(database)
         """获取数据并计算方位角"""
         try:

@@ -1,5 +1,6 @@
 Flask
 Flask-Cors
 Flask-RESTful
-flasgger==0.9.5
+flasgger
 numba
+addereq
