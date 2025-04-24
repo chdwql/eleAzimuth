@@ -45,7 +45,7 @@ pip install -r requirements.txt
 
 3. 配置数据库连接
 
-参考addereq说明
+参考[addereq官方页面](https://pypi.org/project/addereq/)
 
 ## 使用方法
 
@@ -133,4 +133,4 @@ eleAzimuth/
 
 ## 许可证
 
-MIT License
+License: MIT
